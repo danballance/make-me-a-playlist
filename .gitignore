@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+.pycache/
+.pytest_cache/
+.venv/
+*.egg-info/
+.coverage
+.ruff_cache/
+.complexipy_cache/
+
+# Node
+node_modules/
+
+# Build output
+ui/dist/
+
+# Secrets
+.env
+
+# Logs
+logs/
+
+# IDE
+.vscode/
+.idea/
+
+# Development environment
+.devenv*
+.direnv
+devenv.local.nix
+
+# Docker runtime data
+data/

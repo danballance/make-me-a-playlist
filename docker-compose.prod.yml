@@ -1,0 +1,42 @@
+# Production stack built from local Dockerfiles.
+#
+# Build and run with:
+#   docker compose -f docker-compose.prod.yml up --build
+#
+# Note: No host port mapping - deployment platforms (Dokply, Railway etc.) handle routing.
+
+services:
+  api:
+    build:
+      context: ./backend
+      target: prod
+    expose:
+      - "8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+      target: prod
+    expose:
+      - "80"
+    environment:
+      PORT: "80"
+      BACKEND_URL: api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:80/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

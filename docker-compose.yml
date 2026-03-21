@@ -1,0 +1,66 @@
+services:
+  api:
+    build:
+      context: ./backend
+      target: dev
+    volumes:
+      - ./backend/api:/app/api
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+      target: dev
+    volumes:
+      - ./ui:/app
+      - ./schema:/schema
+      - ui-node-modules:/app/node_modules
+      - ui-pnpm-store:/app/.pnpm-store
+    ports:
+      - "3000:5173"
+    environment:
+      BACKEND_URL: api:8080
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5173/"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    depends_on:
+      api:
+        condition: service_healthy
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.58.2-noble
+    working_dir: /app
+    volumes:
+      - ./ui:/app
+      - playwright-node-modules:/app/node_modules
+    command: >
+      sh -c "
+        corepack enable pnpm &&
+        pnpm install --frozen-lockfile &&
+        pnpm test:e2e
+      "
+    environment:
+      PLAYWRIGHT_BASE_URL: http://ui:5173
+    depends_on:
+      api:
+        condition: service_healthy
+      ui:
+        condition: service_healthy
+    profiles:
+      - test
+
+volumes:
+  ui-node-modules:
+  ui-pnpm-store:
+  playwright-node-modules:

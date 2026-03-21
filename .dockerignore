@@ -1,0 +1,41 @@
+# Version control
+.git
+.gitignore
+
+# Python/Nix caches
+__pycache__/
+*.pyc
+.pycache/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node artifacts
+node_modules/
+
+# Documentation and planning
+docs/
+tasks/
+CLAUDE.md
+
+# Development environment
+devenv.yaml
+devenv.nix
+devenv.lock
+.devenv/
+.direnv/
+.envrc
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+docker-compose.yml
+.dockerignore
+
+# CI
+.github/
+
+# Claude
+.claude/

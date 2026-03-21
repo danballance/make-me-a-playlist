@@ -1,0 +1,138 @@
+[project]
+name = "piper-reference"
+version = "0.1.0"
+description = "A full-stack web application"
+authors = [
+    {name = "Anoni Mouse",email = "nixprivacy@pm.me"}
+]
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "litestar[standard] (>=2.15,<3.0.0)",
+    "pydantic (>=2.0,<3.0)",
+    "python-dotenv (>=1.0,<2.0)",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0,<9.0",
+    "httpx>=0.27,<1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["api"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+markers = [
+    "schemathesis: property-based API schema tests",
+]
+
+[tool.importlinter]
+root_package = "api"
+include_external_packages = true
+
+# Contract 1: Layer architecture within todo domain
+[[tool.importlinter.contracts]]
+id = "todo-layers"
+name = "Todo domain follows layered architecture"
+type = "layers"
+containers = ["api.todo"]
+layers = [
+    "presentation",
+    "application",
+    "infrastructure",
+    "domain",
+]
+
+# Contract 2: Infrastructure only imports domain
+[[tool.importlinter.contracts]]
+id = "todo-infra-isolation"
+name = "Todo infrastructure only imports from domain"
+type = "forbidden"
+source_modules = ["api.todo.infrastructure"]
+forbidden_modules = [
+    "api.todo.application",
+    "api.todo.presentation",
+]
+
+# Contract 3: Domain independence between modules
+[[tool.importlinter.contracts]]
+id = "domain-independence"
+name = "Domain modules are independent of each other"
+type = "independence"
+modules = [
+    "api.todo",
+    "api.user",
+]
+
+# Contract 4: Domain layer must not import Litestar
+[[tool.importlinter.contracts]]
+id = "domain-no-framework"
+name = "Domain layers must not import framework code"
+type = "forbidden"
+source_modules = [
+    "api.todo.domain",
+    "api.user.domain",
+]
+forbidden_modules = ["litestar"]
+
+# Contract 5: Application layer must not import Litestar
+[[tool.importlinter.contracts]]
+id = "application-no-framework"
+name = "Application layers must not import framework code"
+type = "forbidden"
+source_modules = ["api.todo.application"]
+forbidden_modules = ["litestar"]
+
+# Contract 6: Infrastructure must not import Litestar
+[[tool.importlinter.contracts]]
+id = "infrastructure-no-framework"
+name = "Infrastructure must not import framework code"
+type = "forbidden"
+source_modules = ["api.todo.infrastructure"]
+forbidden_modules = ["litestar"]
+
+# Shared lib must not import domain-specific code
+[[tool.importlinter.contracts]]
+id = "shared-independence"
+name = "Shared cannot import domain-specific code"
+type = "forbidden"
+source_modules = ["api.shared"]
+forbidden_modules = [
+    "api.todo",
+    "api.user",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "schemathesis>=4.10,<5.0",
+    "import-linter>=2.7,<3.0",
+    "ruff>=0.11,<1.0",
+    "ty>=0.0.1a0",
+    "bandit>=1.8,<2.0",
+    "vulture>=2.14,<3.0",
+    "complexipy>=5.0,<6.0",
+    "wemake-python-styleguide>=1.0,<2.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+extend-exclude = [
+    "tests/", "test/", "test_*.py", "*_test.py", "conftest.py",
+    ".venv/", "node_modules/", "dist/", ".devenv/",
+]
+
+[tool.ruff.lint]
+external = ["WPS"]
+select = [
+    "E", "F", "W", "I", "N", "UP", "S", "B", "A", "C4", "DTZ",
+    "T10", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SLF", "SIM",
+    "TID", "TCH", "ARG", "ERA", "PL", "PERF", "RUF",
+]

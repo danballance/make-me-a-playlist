@@ -1,0 +1,18 @@
+:{$PORT}
+
+root * /srv/dist
+encode gzip
+
+handle /api/* {
+	uri strip_prefix /api
+	reverse_proxy {$BACKEND_URL}
+}
+
+handle {
+	try_files {path} /index.html
+	file_server
+}
+
+handle /health {
+	respond "OK" 200
+}

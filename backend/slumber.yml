@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/LucasPickering/slumber/refs/tags/v4.3.1/schemas/collection.json
+# ^ This enables schema validation and autocomplete in your editor
+# https://github.com/redhat-developer/yaml-language-server
+
+# For basic usage info, see:
+# https://slumber.lucaspickering.me/getting_started.html
+# For all collection options, see:
+# https://slumber.lucaspickering.me/api/request_collection/index.html
+
+name: piper-reference
+
+# Profiles are groups of data you can easily switch between. A common usage is
+# to define profiles for various environments of a REST service
+profiles:
+  local:
+    name: Local
+    data:
+      host: http://localhost:8080
+
+
+requests:
+  todo_list:
+    name: List items
+    method: GET
+    url: "{{ host }}/"
+  todo_create:
+    name: Create item
+    method: POST
+    url: "{{ host }}/"
+    body:
+      type: json
+      data: { "title": "Item One", "done": false }
+

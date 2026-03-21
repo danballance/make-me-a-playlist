@@ -1,0 +1,38 @@
+# Production stack using prebuilt images.
+#
+# Run with:
+#   API_IMAGE=ghcr.io/org/app:tag UI_IMAGE=ghcr.io/org/app-ui:tag \
+#   docker compose -f docker-compose.images.yml up
+#
+# Note: No host port mapping - deployment platforms (Dokplay etc.) handle routing.
+
+services:
+  api:
+    image: ${API_IMAGE:?Set API_IMAGE to a published backend image reference}
+    expose:
+      - "8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  ui:
+    image: ${UI_IMAGE:?Set UI_IMAGE to a published frontend image reference}
+    expose:
+      - "80"
+    environment:
+      PORT: "80"
+      BACKEND_URL: api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:80/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
