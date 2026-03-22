@@ -16,7 +16,7 @@ export function registerTools(ctx: HarnessContext): void {
     }),
     promptGuidelines:
       "Use harness_advance when you have completed all deliverables for the current phase.",
-    async execute(_toolCallId, params, _onUpdate, uiCtx) {
+    async execute(_toolCallId, params, _signal, _onUpdate, uiCtx) {
       if (!ctx.state.active) {
         return {
           content: [{ type: "text", text: "Harness is not active." }],
@@ -66,7 +66,7 @@ export function registerTools(ctx: HarnessContext): void {
       if (!next) {
         ctx.state.active = false;
         ctx.persistState();
-        uiCtx.ui.setStatus("harness", "Complete");
+        if (uiCtx.hasUI) uiCtx.ui.setStatus("harness", "Complete");
         return {
           content: [
             {
@@ -82,7 +82,7 @@ export function registerTools(ctx: HarnessContext): void {
 
       ctx.state.currentPhase = next.name;
       ctx.persistState();
-      uiCtx.ui.setStatus("harness", next.label);
+      if (uiCtx.hasUI) uiCtx.ui.setStatus("harness", next.label);
 
       return {
         content: [
