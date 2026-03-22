@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make me a playlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <style>
+    .font-primary { font-family: "IBM Plex Sans", sans-serif; }
+    .icon { font-family: "lucide"; }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/lucide-static@latest/font/lucide.css">
+</head>
+<body class="h-full bg-[#FEF2F2] font-primary">
+  <div class="flex flex-col items-center justify-center h-full px-6">
+    <div class="flex flex-col items-center gap-8 w-[480px] max-w-full">
+      <!-- Header -->
+      <div class="flex flex-col items-center gap-3 w-full">
+        <h1 class="text-[36px] font-semibold text-[#1F2937] tracking-[-0.5px] leading-[1.05] text-center">
+          Make me a playlist
+        </h1>
+        <p class="text-sm font-medium text-[#6B7280] leading-[1.5] text-center max-w-[400px]">
+          Describe a topic or theme — our AI agent will dig through YouTube to find hidden gems just for you.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <div class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col gap-1.5 w-full">
+          <input
+            type="text"
+            placeholder='e.g. "advanced vim motions"'
+            class="w-full rounded-2xl border border-[#FECACA] bg-white px-[18px] py-[14px] text-sm text-[#1F2937] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#DC2626]/20 focus:border-[#DC2626]"
+          >
+        </div>
+        <button class="flex items-center justify-center gap-1.5 rounded-2xl bg-[#DC2626] px-7 py-3 text-sm font-medium text-[#fafafa] hover:bg-[#B91C1C] transition-colors">
+          Find my playlist
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

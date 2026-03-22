@@ -49,7 +49,7 @@ This example code should be removed once the first feature in the project has be
 Development is designed to progress sequentially through a number of stages:
 
 1. planning
-2. test creation
+2. test-creation
 3. implementation
 4. documentation
 

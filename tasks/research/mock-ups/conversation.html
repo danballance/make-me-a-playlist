@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make me a playlist — Conversation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .font-primary { font-family: "IBM Plex Sans", sans-serif; }
+  </style>
+</head>
+<body class="h-full bg-[#FEF2F2] font-primary">
+  <div class="flex flex-col h-full">
+    <!-- Top bar -->
+    <div class="flex items-center gap-3 px-6 py-4 bg-white border-b border-[#FECACA]">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cursor-pointer"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+			<span class="text-lg font-semibold text-[#1F2937] tracking-[-0.3px]">advanced vim motions</span>
+    </div>
+
+    <!-- Chat area -->
+    <div class="flex-1 overflow-auto flex flex-col gap-4 p-6">
+      <!-- Agent message 1 -->
+      <div class="w-full">
+        <div class="flex flex-col gap-2 rounded-2xl bg-white border border-[#FECACA] p-[14px_18px] max-w-[500px]">
+          <span class="text-xs font-semibold text-[#DC2626]">Playlist Agent</span>
+          <p class="text-sm text-[#1F2937] leading-[1.5]">
+            Hey! I'd love to help you build a playlist. You mentioned "advanced vim motions" — that's a great starting point. Are you looking for more knowledge on the core built in functionality, third party plugins or something else? 
+          </p>
+        </div>
+      </div>
+
+      <!-- User message -->
+      <div class="w-full flex justify-end">
+        <div class="rounded-2xl bg-[#DC262620] p-[14px_18px] max-w-[380px]">
+          <p class="text-sm text-[#1F2937] leading-[1.5]">
+					I'm mostly interested in learning about the tiny.nvim suite of plugins
+          </p>
+        </div>
+      </div>
+
+      <!-- Agent message 2 -->
+      <div class="w-full">
+        <div class="flex flex-col gap-2 rounded-2xl bg-white border border-[#FECACA] p-[14px_18px] max-w-[500px]">
+          <span class="text-xs font-semibold text-[#DC2626]">Playlist Agent</span>
+          <p class="text-sm text-[#1F2937] leading-[1.5]">
+            Okay nice! Do you have any experience with tiny.nvim already or would you prefer something for someone new to the tiny.nvim ecosystem?
+          </p>
+        </div>
+      </div>
+
+      <!-- Thinking indicator -->
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse"></span>
+        <span class="w-2 h-2 rounded-full bg-[#DC262680] animate-pulse [animation-delay:150ms]"></span>
+        <span class="w-2 h-2 rounded-full bg-[#DC262640] animate-pulse [animation-delay:300ms]"></span>
+        <span class="text-xs font-medium text-[#9CA3AF]">Agent is thinking...</span>
+      </div>
+    </div>
+
+    <!-- Input bar -->
+    <div class="flex items-center gap-3 px-6 py-4 bg-white border-t border-[#FECACA]">
+      <input
+        type="text"
+        placeholder="Type your reply..."
+        class="flex-1 rounded-2xl bg-[#FEF2F2] border border-[#FECACA] px-[18px] py-3 text-sm text-[#1F2937] placeholder:text-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#DC2626]/20"
+      >
+      <button class="flex items-center justify-center w-10 h-10 rounded-full bg-[#DC2626] hover:bg-[#B91C1C] transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+      </button>
+    </div>
+  </div>
+</body>
+</html>
