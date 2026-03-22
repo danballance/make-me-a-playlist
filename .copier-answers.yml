@@ -1,10 +1,10 @@
 # Changes here will be overwritten by Copier; DO NOT EDIT
-_commit: ac0c40b
+_commit: 9522dfd
 _src_path: .
 author_email: nixprivacy@pm.me
 author_name: Anoni Mouse
 include_nix_devenv: true
 project_description: A full-stack web application
-project_name: piper-reference
-python_package_name: piper_reference
+project_name: make-me-a-playlist
+python_package_name: make_me_a_playlist
 

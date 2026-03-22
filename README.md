@@ -1,26 +1,33 @@
-# piper-reference
+# make-me-a-playlist
 
 A full-stack web application
 
+## Getting Started with Pi
 
-## Getting Started
+This project uses the [pi coding agent](https://github.com/mariozechner/pi-coding-agent) with a development harness that guides work through structured phases.
 
-This project uses [devenv](https://devenv.sh/) for reproducible development environments.
+### Starting the Harness
 
-```bash
-cd piper-reference
-direnv allow   # first time only
-```
-"
+Run `/harness` in pi to activate the development workflow. The harness enforces four sequential phases:
 
-## Keeping Up to Date
+1. **Planning** — design the solution, write a plan to `tasks/plans/`
+2. **Test Creation** — write failing tests bottom-up before implementation
+3. **Implementation** — execute the plan, make tests pass
+4. **Documentation** — update docs, ADRs, and clean up
 
-This project was generated from a [copier](https://copier.readthedocs.io/) template. When the template is updated with new features, dependency upgrades, or improvements, pull them in:
+Use `/phase` at any time to check your current progress.
 
-```bash
-copier update
-```
+### Available Skills
 
-Copier merges template changes with your project-specific code using a 3-way merge. Your custom features and modifications are preserved. If both the template and your code changed the same lines, standard git conflict markers appear — resolve them as usual.
+The project includes domain-specific skills in `.pi/skills/` that pi loads on demand:
 
-See `.copier-answers.yml` for the current template version and answers.
+| Skill | Purpose |
+|-------|---------|
+| `litestar` | Backend framework patterns, DI, ORM, OpenAPI |
+| `react-frontend` | TanStack Router/Query, Zustand, component patterns |
+| `playwright-bdd` | E2E testing with Gherkin feature files |
+| `recommender` | The recommender package API and CLI |
+
+### Further Reading
+
+See `docs/development-pipeline.md` for the full development pipeline, command reference, and verification gates.

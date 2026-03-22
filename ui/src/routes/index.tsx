@@ -27,7 +27,7 @@ function IndexPage() {
     <div className="container mx-auto max-w-2xl p-8">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">piper-reference — Todos</CardTitle>
+          <CardTitle className="text-2xl">make-me-a-playlist — Todos</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <Suspense fallback={<div>Loading...</div>}>

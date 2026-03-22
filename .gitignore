@@ -31,3 +31,6 @@ devenv.local.nix
 
 # Docker runtime data
 data/
+
+backend/.venv
+backend/.hypothesis/

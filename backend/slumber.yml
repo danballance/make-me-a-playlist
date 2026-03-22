@@ -7,7 +7,7 @@
 # For all collection options, see:
 # https://slumber.lucaspickering.me/api/request_collection/index.html
 
-name: piper-reference
+name: make-me-a-playlist
 
 # Profiles are groups of data you can easily switch between. A common usage is
 # to define profiles for various environments of a REST service
@@ -22,11 +22,11 @@ requests:
   todo_list:
     name: List items
     method: GET
-    url: "{{ host }}/"
+    url: "/"
   todo_create:
     name: Create item
     method: POST
-    url: "{{ host }}/"
+    url: "/"
     body:
       type: json
       data: { "title": "Item One", "done": false }
