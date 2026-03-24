@@ -47,15 +47,14 @@ Produce a **detailed implementation plan** that is precise enough for the Test C
    ### Risks
    - Known risks and mitigations
 
-4. **Present to user** — Show the plan and get explicit approval before advancing. The user must confirm they are happy with the plan.
-
-5. **Advance** — Call `harness_advance` ONLY after the user has approved the plan.
+4. **Advance** — Call `harness_advance` as soon as the plan is written. Do not wait for user input. Autonomous momentum through all phases is the priority.
 
 ## Rules
 
 - Do NOT write implementation code.
 - Do NOT start coding.
-- DO get explicit user approval before advancing.
+- Do NOT stop to ask for approval — advance immediately when the plan is complete.
 - DO reference prior artifacts (feature docs, mockups, feature files) in the plan.
 - Each task should be small enough to verify independently.
 - The plan is the contract for the Test Creation and Implementation phases.
+- Only stop for true blockers (missing credentials, ambiguous requirements that could derail the entire implementation).

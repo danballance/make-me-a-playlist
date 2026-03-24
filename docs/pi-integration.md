@@ -32,13 +32,13 @@ Guides the agent through structured development phases. Activate it with:
 
 The harness walks through five phases defined in `.pied-pi/harness.json`:
 
-| Phase | Requires | Confirm? | Skill |
-|---|---|---|---|
-| Research | — | yes | research |
-| Design | research | no | design |
-| Plan | research | yes | planning |
-| Implementation | plan | no | implementation |
-| Documentation | implement | no | documentation |
+| Phase | Requires | Skill |
+|---|---|---|
+| Research | — | research |
+| Design | research | design |
+| Plan | research | planning |
+| Implementation | plan | implementation |
+| Documentation | implement | documentation |
 
 Each phase injects its skill (from `.pied-pi/skills/`) into the system prompt so
 the agent follows the right process for that stage.
@@ -135,8 +135,8 @@ bash .pi/extensions/lint-guard/scripts/lint-py.sh format ./backend
 ## Customizing
 
 **Harness phases** — edit `.pied-pi/harness.json` to add, remove, or reorder
-phases. Each phase needs `name`, `label`, `requires` (dependencies), `confirm`
-(pause for user approval), and `skill` (directory name under `.pied-pi/skills/`).
+phases. Each phase needs `name`, `label`, `requires` (dependencies), and `skill`
+(directory name under `.pied-pi/skills/`).
 
 **Skills** — add or edit markdown files in `.pied-pi/skills/<name>/SKILL.md`.
 The skill content is injected into the system prompt when that phase is active.

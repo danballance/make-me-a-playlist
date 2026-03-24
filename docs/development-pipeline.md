@@ -52,7 +52,7 @@ cd ui && pnpm codegen
 
 The pied-pi harness (`.pied-pi/harness.json`) defines 4 sequential phases. The pipeline dictates the order of work within each phase.
 
-### Phase 1: Planning (confirm: yes)
+### Phase 1: Planning
 
 1. Write feature spec in `tasks/`
 2. Create Gherkin `.feature` files in `tasks/research/feature-descriptions/`
@@ -60,7 +60,7 @@ The pied-pi harness (`.pied-pi/harness.json`) defines 4 sequential phases. The p
 4. Identify: new Pydantic models, API endpoints, UI routes/components
 5. Save plan to `tasks/plans/`
 
-### Phase 2: Test Creation (confirm: yes)
+### Phase 2: Test Creation
 
 Write failing tests bottom-up across both services.
 
@@ -74,7 +74,7 @@ Write failing tests bottom-up across both services.
 5. E2E step definitions → `ui/tests/e2e/`
 6. Component tests → `ui/tests/components/{feature}/`
 
-### Phase 3: Implementation (confirm: no)
+### Phase 3: Implementation
 
 Strict dependency order across the pipeline:
 
@@ -103,7 +103,7 @@ E2E validation against running stack
 - After UI code: `cd ui && pnpm test`
 - Full stack: `docker compose up -d --wait api ui && docker compose --profile test run --rm playwright`
 
-### Phase 4: Documentation (confirm: no)
+### Phase 4: Documentation
 
 1. Update ADRs in `docs/ADRs/` for significant decisions
 2. Update `backend/slumber.yml` with new request examples

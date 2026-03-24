@@ -4,28 +4,24 @@
       "name": "planning",
       "label": "Planning",
       "requires": [],
-      "confirm": true,
       "skill": "planning"
     },
     {
       "name": "test-creation",
       "label": "Test Creation",
       "requires": ["planning"],
-      "confirm": true,
       "skill": "test-creation"
     },
     {
       "name": "implementation",
       "label": "Implementation",
       "requires": ["test-creation"],
-      "confirm": false,
       "skill": "implementation"
     },
     {
       "name": "documentation",
       "label": "Documentation",
       "requires": ["implementation"],
-      "confirm": false,
       "skill": "documentation"
     }
   ]

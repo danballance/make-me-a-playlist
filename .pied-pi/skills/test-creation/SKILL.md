@@ -43,9 +43,7 @@ Produce a comprehensive suite of **failing tests** that cover the feature end-to
    - Backend: `cd backend && uv run pytest tests/{feature}/ -v`
    - Frontend: `cd ui && pnpm test`
 
-5. **Present to user** — Show the test inventory and get explicit approval before advancing.
-
-6. **Advance** — Call `harness_advance` ONLY after the user has approved the test suite.
+5. **Advance** — Call `harness_advance` as soon as all tests are written and confirmed failing. Do not wait for user input. Autonomous momentum through all phases is the priority.
 
 ## Rules
 
@@ -56,4 +54,5 @@ Produce a comprehensive suite of **failing tests** that cover the feature end-to
 - Each step definition text must be unique across ALL step files. Shared steps (e.g., button assertions) should be defined once in a shared steps file (e.g., `common.ts`) and imported where needed.
 - Do not define the same step text with different keywords (Given/When/Then) — playwright-bdd matches by text, not keyword.
 - Each test should trace to a requirement in the plan.
-- DO get explicit user approval before advancing.
+- Do NOT stop to ask for approval — advance immediately when tests are complete.
+- Only stop for true blockers (missing credentials, ambiguous requirements that could derail the entire implementation).

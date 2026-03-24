@@ -10,7 +10,8 @@ def export_schema() -> None:
     app = create_app()
     schema = app.openapi_schema
     output = Path(__file__).resolve().parent.parent / "schema" / "openapi.json"
-    output.write_text(json.dumps(schema.to_schema(), indent=2) + "\n")
+    serialized = json.dumps(schema.to_schema(), indent=2)
+    output.write_text(f"{serialized}\n")
 
 
 if __name__ == "__main__":
