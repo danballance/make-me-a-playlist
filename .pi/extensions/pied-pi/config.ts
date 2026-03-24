@@ -34,7 +34,6 @@ export function loadConfig(piedPiDir: string): HarnessConfig {
     if (typeof p.name !== "string" || p.name.length === 0) throw new Error(`${prefix}: "name" must be a non-empty string.`);
     if (typeof p.label !== "string" || p.label.length === 0) throw new Error(`${prefix} (${p.name}): "label" must be a non-empty string.`);
     if (!Array.isArray(p.requires)) throw new Error(`${prefix} (${p.name}): "requires" must be an array.`);
-    if (typeof p.confirm !== "boolean") throw new Error(`${prefix} (${p.name}): "confirm" must be a boolean.`);
     if (typeof p.skill !== "string" || p.skill.length === 0) throw new Error(`${prefix} (${p.name}): "skill" must be a non-empty string.`);
   }
   return parsed;

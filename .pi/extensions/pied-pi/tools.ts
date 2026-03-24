@@ -39,27 +39,8 @@ export function registerTools(ctx: HarnessContext): void {
         };
       }
 
-      // Confirm gate (two-call pattern)
-      if (phase.confirm && !ctx.state.pendingConfirm) {
-        ctx.state.pendingConfirm = true;
-        ctx.persistState();
-        return {
-          content: [
-            {
-              type: "text",
-              text:
-                `Phase "${phase.label}" requires user confirmation before advancing. ` +
-                `Present your work to the user and wait for their approval. ` +
-                `Once the user confirms, call harness_advance again to complete the phase.`,
-            },
-          ],
-          details: {},
-        };
-      }
-
-      // Advance: push to completed, reset pendingConfirm
+      // Advance: push to completed
       ctx.state.completed.push(phase.name);
-      ctx.state.pendingConfirm = false;
 
       const next = nextPhase(ctx.config, ctx.state);
 

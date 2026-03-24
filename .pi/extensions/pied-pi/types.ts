@@ -6,7 +6,6 @@ export interface PhaseConfig {
   name: string;
   label: string;
   requires: string[];
-  confirm: boolean;
   skill: string;
 }
 
@@ -20,7 +19,6 @@ export interface HarnessState {
   currentPhase: string;
   completed: string[];
   active: boolean;
-  pendingConfirm: boolean;
 }
 
 // ── Shared context ─────────────────────────────────────────────────────
