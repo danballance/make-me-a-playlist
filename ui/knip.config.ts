@@ -2,7 +2,7 @@ import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
   ignore: ["src/components/ui/**"],
-  ignoreUnresolved: ["@/api/generated/.*", "./routeTree.gen"],
+  ignoreUnresolved: ["./routeTree.gen"],
   entry: [
     "src/routes/**/*.tsx",
     "tests/e2e/**/*.ts",

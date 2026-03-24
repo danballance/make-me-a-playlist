@@ -2,7 +2,14 @@ from litestar import Litestar, get
 from litestar.di import Provide
 from litestar.logging import LoggingConfig
 from litestar.plugins.pydantic import PydanticInitPlugin
+from recommender.providers import ProviderConfig
 
+from api.playlist.application.services import PlaylistService
+from api.playlist.infrastructure.memory_repo import InMemorySessionRepository
+from api.playlist.infrastructure.recommender_factory import (
+    DefaultRecommenderSessionFactory,
+)
+from api.playlist.presentation.controllers import PlaylistController
 from api.todo.application.services import TodoService
 from api.todo.infrastructure.memory_repo import InMemoryTodoRepository
 from api.todo.presentation.controllers import TodoController
@@ -13,9 +20,18 @@ async def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
+def _create_playlist_service() -> PlaylistService:
+    return PlaylistService(
+        repository=InMemorySessionRepository(),
+        session_factory=DefaultRecommenderSessionFactory(
+            provider=ProviderConfig.anthropic(),
+        ),
+    )
+
+
 def create_app() -> Litestar:
-    repository = InMemoryTodoRepository()
-    service = TodoService(repository=repository)
+    todo_service = TodoService(repository=InMemoryTodoRepository())
+    playlist_service = _create_playlist_service()
 
     logging_config = LoggingConfig(
         root={"level": "DEBUG", "handlers": ["queue_listener"]},
@@ -28,8 +44,14 @@ def create_app() -> Litestar:
     )
 
     return Litestar(
-        route_handlers=[TodoController, health_check],
-        dependencies={"service": Provide(lambda: service, sync_to_thread=False)},
+        route_handlers=[TodoController, PlaylistController, health_check],
+        dependencies={
+            "service": Provide(lambda: todo_service, sync_to_thread=False),
+            "playlist_service": Provide(
+                lambda: playlist_service,
+                sync_to_thread=False,
+            ),
+        },
         plugins=[PydanticInitPlugin(validate_strict=True)],
         logging_config=logging_config,
     )

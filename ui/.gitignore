@@ -31,3 +31,4 @@ src/routeTree.gen.ts
 # Test artifacts
 test-results/
 playwright-report/
+.features-gen/

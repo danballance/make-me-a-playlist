@@ -1,133 +1,51 @@
-import { createFileRoute } from "@tanstack/react-router";
-import {
-  useSuspenseQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { Suspense } from "react";
-import {
-  todoListOptions,
-  addItemMutation,
-  itemTitleUpdateItemMutation,
-} from "@/features/todo/queries";
-import { TodoList } from "@/features/todo/components/todo-list";
-import { TodoForm } from "@/features/todo/components/todo-form";
-import { useTodoFilterStore } from "@/features/todo/store";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { createSessionMutation } from "@/features/playlist/queries";
+import { TopicInputForm } from "@/features/playlist/components/topic-input-form";
 
 export const Route = createFileRoute("/")({
-  loader: ({ context }) =>
-    context.queryClient.ensureQueryData(todoListOptions()),
   component: IndexPage,
 });
 
 function IndexPage() {
-  return (
-    <div className="container mx-auto max-w-2xl p-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">make-me-a-playlist — Todos</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <Suspense fallback={<div>Loading...</div>}>
-            <TodoContent />
-          </Suspense>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
+  const navigate = useNavigate();
 
-function TodoContent() {
-  const queryClient = useQueryClient();
-  const { data: todos = [] } = useSuspenseQuery(todoListOptions());
-  const { filter, setFilter } = useTodoFilterStore();
-
-  const addMutation = useMutation({
-    ...addItemMutation(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: todoListOptions().queryKey });
+  const mutation = useMutation({
+    ...createSessionMutation(),
+    onSuccess: (data) => {
+      navigate({
+        to: "/conversation/$sessionId",
+        params: { sessionId: data.session_id },
+      });
     },
   });
 
-  const toggleMutation = useMutation({
-    ...itemTitleUpdateItemMutation(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: todoListOptions().queryKey });
-    },
-  });
-
-  const handleAdd = (title: string) => {
-    addMutation.mutate({
-      body: { title, done: false },
-    });
-  };
-
-  const handleToggle = (title: string) => {
-    const todo = todos.find((t) => t.title === title);
-    if (!todo) return;
-    toggleMutation.mutate({
-      path: { item_title: title },
-      body: { title, done: !todo.done },
-    });
+  const handleSubmit = (topic: string) => {
+    mutation.mutate({ body: { topic } });
   };
 
   return (
-    <>
-      <TodoForm onSubmit={handleAdd} />
-
-      <div className="flex gap-2">
-        <FilterButton
-          label="All"
-          value="all"
-          current={filter}
-          onClick={setFilter}
+    <div className="flex flex-col items-center justify-center h-full min-h-screen px-6">
+      <div className="flex flex-col items-center gap-8 w-[480px] max-w-full">
+        <div className="flex flex-col items-center gap-3 w-full">
+          <h1 className="text-[36px] font-semibold text-[#1F2937] tracking-[-0.5px] leading-[1.05] text-center">
+            Make me a playlist
+          </h1>
+          <p className="text-sm font-medium text-[#6B7280] leading-[1.5] text-center max-w-[400px]">
+            Describe a topic or theme — our AI agent will dig through YouTube to
+            find hidden gems just for you.
+          </p>
+        </div>
+        <TopicInputForm
+          onSubmit={handleSubmit}
+          isSubmitting={mutation.isPending}
         />
-        <FilterButton
-          label="Done"
-          value="done"
-          current={filter}
-          onClick={setFilter}
-        />
-        <FilterButton
-          label="Not Done"
-          value="not-done"
-          current={filter}
-          onClick={setFilter}
-        />
+        {mutation.isError && (
+          <p className="text-sm text-[#DC2626]">
+            Failed to create session. Please try again.
+          </p>
+        )}
       </div>
-
-      <TodoList todos={todos} filter={filter} onToggle={handleToggle} />
-
-      {addMutation.isError && (
-        <p className="text-sm text-destructive">Failed to add todo</p>
-      )}
-      {toggleMutation.isError && (
-        <p className="text-sm text-destructive">Failed to update todo</p>
-      )}
-    </>
-  );
-}
-
-function FilterButton({
-  label,
-  value,
-  current,
-  onClick,
-}: {
-  label: string;
-  value: "all" | "done" | "not-done";
-  current: string;
-  onClick: (filter: "all" | "done" | "not-done") => void;
-}) {
-  return (
-    <Button
-      variant={current === value ? "default" : "outline"}
-      size="sm"
-      onClick={() => onClick(value)}
-    >
-      {label}
-    </Button>
+    </div>
   );
 }

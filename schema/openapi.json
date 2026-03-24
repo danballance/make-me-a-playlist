@@ -291,6 +291,222 @@
         "deprecated": false
       }
     },
+    "/sessions": {
+      "post": {
+        "summary": "CreateSession",
+        "operationId": "SessionsCreateSession",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Document created, URL follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/sessions/{session_id}": {
+      "get": {
+        "summary": "GetSession",
+        "operationId": "SessionsSessionIdGetSession",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/sessions/{session_id}/reply": {
+      "post": {
+        "summary": "Reply",
+        "operationId": "SessionsSessionIdReplyReply",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "deprecated": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/health": {
       "get": {
         "summary": "HealthCheck",
@@ -317,6 +533,211 @@
   },
   "components": {
     "schemas": {
+      "ChatMessage": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "agent",
+              "user"
+            ]
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "role"
+        ],
+        "title": "ChatMessage"
+      },
+      "CreateSessionRequest": {
+        "properties": {
+          "topic": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "topic"
+        ],
+        "title": "CreateSessionRequest"
+      },
+      "PlaylistResult": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "result"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "videos": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendedVideo"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 5
+          },
+          "overall_rationale": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "overall_rationale",
+          "topic",
+          "videos"
+        ],
+        "title": "PlaylistResult"
+      },
+      "RecommendedVideo": {
+        "properties": {
+          "video_id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "channel": {
+            "type": "string"
+          },
+          "duration_secs": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "view_count": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "what_makes_it_interesting": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "channel",
+          "reason",
+          "title",
+          "url",
+          "video_id",
+          "what_makes_it_interesting"
+        ],
+        "title": "RecommendedVideo"
+      },
+      "ReplyRequest": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "ReplyRequest"
+      },
+      "SessionDetailResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string"
+          },
+          "topic": {
+            "type": "string"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "conversing",
+              "searching",
+              "complete"
+            ]
+          },
+          "playlist": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PlaylistResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "messages",
+          "session_id",
+          "status",
+          "topic"
+        ],
+        "title": "SessionDetailResponse"
+      },
+      "SessionResponse": {
+        "properties": {
+          "session_id": {
+            "type": "string"
+          },
+          "message": {
+            "$ref": "#/components/schemas/ChatMessage"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "conversing",
+              "searching",
+              "complete"
+            ]
+          },
+          "playlist": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PlaylistResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "session_id",
+          "status"
+        ],
+        "title": "SessionResponse"
+      },
       "TodoItem": {
         "properties": {
           "title": {

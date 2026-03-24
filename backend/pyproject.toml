@@ -68,6 +68,7 @@ type = "independence"
 modules = [
     "api.todo",
     "api.user",
+    "api.playlist",
 ]
 
 # Contract 4: Domain layer must not import Litestar
@@ -97,6 +98,54 @@ type = "forbidden"
 source_modules = ["api.todo.infrastructure"]
 forbidden_modules = ["litestar"]
 
+# Contract: Playlist layer architecture
+[[tool.importlinter.contracts]]
+id = "playlist-layers"
+name = "Playlist domain follows layered architecture"
+type = "layers"
+containers = ["api.playlist"]
+layers = [
+    "presentation",
+    "application",
+    "infrastructure",
+    "domain",
+]
+
+# Contract: Playlist infrastructure isolation
+[[tool.importlinter.contracts]]
+id = "playlist-infra-isolation"
+name = "Playlist infrastructure only imports from domain"
+type = "forbidden"
+source_modules = ["api.playlist.infrastructure"]
+forbidden_modules = [
+    "api.playlist.application",
+    "api.playlist.presentation",
+]
+
+# Contract: Playlist domain must not import Litestar
+[[tool.importlinter.contracts]]
+id = "playlist-domain-no-framework"
+name = "Playlist domain must not import framework code"
+type = "forbidden"
+source_modules = ["api.playlist.domain"]
+forbidden_modules = ["litestar"]
+
+# Contract: Playlist application must not import Litestar
+[[tool.importlinter.contracts]]
+id = "playlist-application-no-framework"
+name = "Playlist application must not import framework code"
+type = "forbidden"
+source_modules = ["api.playlist.application"]
+forbidden_modules = ["litestar"]
+
+# Contract: Playlist infrastructure must not import Litestar
+[[tool.importlinter.contracts]]
+id = "playlist-infrastructure-no-framework"
+name = "Playlist infrastructure must not import framework code"
+type = "forbidden"
+source_modules = ["api.playlist.infrastructure"]
+forbidden_modules = ["litestar"]
+
 # Shared lib must not import domain-specific code
 [[tool.importlinter.contracts]]
 id = "shared-independence"
@@ -106,6 +155,7 @@ source_modules = ["api.shared"]
 forbidden_modules = [
     "api.todo",
     "api.user",
+    "api.playlist",
 ]
 
 [dependency-groups]
@@ -121,6 +171,9 @@ dev = [
     "complexipy>=5.0,<6.0",
     "wemake-python-styleguide>=1.0,<2.0",
 ]
+
+[tool.vulture]
+ignore_names = ["cls"]
 
 [tool.ruff]
 line-length = 88

@@ -14,7 +14,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootComponent() {
   return (
     <>
-      <main className="min-h-screen bg-background text-foreground">
+      <main
+        className="min-h-screen bg-[#FEF2F2]"
+        style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}
+      >
         <Outlet />
       </main>
       <ReactQueryDevtools buttonPosition="bottom-left" />

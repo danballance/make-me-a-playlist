@@ -31,3 +31,24 @@ requests:
       type: json
       data: { "title": "Item One", "done": false }
 
+  session_create:
+    name: Create playlist session
+    method: POST
+    url: "{{host}}/sessions"
+    body:
+      type: json
+      data: { "topic": "advanced vim motions" }
+
+  session_reply:
+    name: Reply to playlist session
+    method: POST
+    url: "{{host}}/sessions/{{session_id}}/reply"
+    body:
+      type: json
+      data: { "message": "I'm mostly interested in the tiny.nvim suite of plugins" }
+
+  session_get:
+    name: Get playlist session
+    method: GET
+    url: "{{host}}/sessions/{{session_id}}"
+
