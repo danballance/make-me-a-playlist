@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  packages = [ pkgs.nodejs ];
+  packages = [ pkgs.nodejs pkgs.git ];
   dotenv.enable = true;
   enterShell = ''
     export NPM_CONFIG_PREFIX="$HOME/.npm-global"

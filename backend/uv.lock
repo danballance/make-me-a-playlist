@@ -1976,7 +1976,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.0,<3.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0,<9.0" },
     { name = "python-dotenv", specifier = ">=1.0,<2.0" },
-    { name = "recommender", git = "ssh://git@github.com/danballance/recommender.git" },
+    { name = "recommender", git = "https://github.com/danballance/recommender.git" },
 ]
 provides-extras = ["dev"]
 
@@ -3115,7 +3115,7 @@ wheels = [
 [[package]]
 name = "recommender"
 version = "0.1.0"
-source = { git = "ssh://git@github.com/danballance/recommender.git#0cc44e3a4725ffb76a1d14a41becb8c6646076d8" }
+source = { git = "https://github.com/danballance/recommender.git#0cc44e3a4725ffb76a1d14a41becb8c6646076d8" }
 dependencies = [
     { name = "exa-py" },
     { name = "httpx" },

@@ -139,4 +139,4 @@ select = [
 ]
 
 [tool.uv.sources]
-recommender = { git = "ssh://git@github.com/danballance/recommender.git" }
+recommender = { git = "https://github.com/danballance/recommender.git" }

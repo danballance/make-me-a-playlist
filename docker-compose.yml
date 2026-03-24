@@ -3,6 +3,7 @@ services:
     build:
       context: ./backend
       target: dev
+    env_file: .env
     volumes:
       - ./backend/api:/app/api
     expose:

@@ -1,7 +1,7 @@
 # Shared base: system packages + user (identical for dev and prod)
 FROM python:3.12-slim AS base
 
-RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends wget git && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system app && useradd --system --gid app app
 
 WORKDIR /app
