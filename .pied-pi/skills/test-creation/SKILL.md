@@ -1,58 +1,36 @@
 ---
 name: harness-test-creation
-description: Activated during the Test Creation phase of the Pi Development Harness. Write failing tests bottom-up across backend and frontend before any implementation code is written. This phase follows Planning and precedes Implementation.
+description: Activated during the Test Creation phase of the Pi Development Harness. Turn the approved plan into failing tests that define the implementation target.
 ---
 
 # Test Creation Phase
 
-You are in the **Test Creation** phase. Write failing tests that define the expected behavior before any implementation begins.
+You are in the **Test Creation** phase. The plan is complete. Your job now is to create the tests that define the implementation target.
 
 ## Objective
 
-Produce a comprehensive suite of **failing tests** that cover the feature end-to-end. These tests become the success criteria for the Implementation phase.
+Translate the implementation plan into **failing tests** that precisely describe the behavior to build in the next phase.
 
 ## Process
 
-1. **Read the implementation plan** — Load the plan from `tasks/plans/<feature-slug>.md` and review the testing strategy section.
+1. **Read the plan** — Load the implementation plan from `tasks/plans/<feature-slug>.md`.
 
-2. **Write backend tests bottom-up (pytest, functional-style):**
+2. **Map plan tasks to tests** — Identify the backend, frontend, and end-to-end behaviors that need explicit coverage.
 
-   Follow this order — each layer depends on the one above:
+3. **Write tests before implementation** — Add or update tests in the appropriate locations, such as:
+   - `backend/tests/`
+   - `ui/tests/`
+   - `ui/tests/e2e/`
 
-   a. **Domain model tests** → `backend/tests/{feature}/domain/test_models.py`
-      - Validate Pydantic model construction, field constraints, serialization
+4. **Run the targeted test commands** — Execute the smallest relevant test commands for the new coverage and confirm the new tests fail for the expected reason.
 
-   b. **Infrastructure tests** → `backend/tests/{feature}/infrastructure/test_{repo}.py`
-      - Test repository implementations against real database (not mocks)
-
-   c. **Application service tests** → `backend/tests/{feature}/application/test_services.py`
-      - Test service orchestration logic
-
-   d. **Presentation controller tests** → `backend/tests/{feature}/presentation/test_controllers.py`
-      - Test HTTP endpoints, request/response shapes, status codes
-
-3. **Write frontend tests:**
-
-   a. **E2E step definitions** → `ui/tests/e2e/`
-      - Implement Playwright BDD tests from the `.feature` files in `tasks/research/feature-descriptions/`
-
-   b. **Component tests** → `ui/tests/components/{feature}/`
-      - Test individual component rendering and interactions
-
-4. **Confirm all tests fail** — Run the test suites to verify tests are written correctly but fail due to missing implementation:
-   - Backend: `cd backend && uv run pytest tests/{feature}/ -v`
-   - Frontend: `cd ui && pnpm test`
-
-5. **Advance** — Call `harness_advance` as soon as all tests are written and confirmed failing. Do not wait for user input. Autonomous momentum through all phases is the priority.
+5. **Advance** — Call `harness_advance` with a summary of the tests you added and what they currently prove.
 
 ## Rules
 
-- Do NOT write implementation code — only test code.
-- All tests MUST fail (they define behavior that doesn't exist yet).
-- Use pytest functional-style tests (not TestClass style).
-- Use Playwright BDD with `.feature` files for E2E tests.
-- Each step definition text must be unique across ALL step files. Shared steps (e.g., button assertions) should be defined once in a shared steps file (e.g., `common.ts`) and imported where needed.
-- Do not define the same step text with different keywords (Given/When/Then) — playwright-bdd matches by text, not keyword.
-- Each test should trace to a requirement in the plan.
-- Do NOT stop to ask for approval — advance immediately when tests are complete.
-- Only stop for true blockers (missing credentials, ambiguous requirements that could derail the entire implementation).
+- Do NOT implement production code in this phase.
+- Do NOT make tests pass yet.
+- Prefer focused, readable tests over broad setup-heavy tests.
+- Cover the key happy path, important edge cases, and visible user-facing behavior.
+- If a planned behavior cannot be expressed as a test, note that clearly in the phase summary before advancing.
+- Advance as soon as the tests are in place and failing for the expected implementation gaps.
