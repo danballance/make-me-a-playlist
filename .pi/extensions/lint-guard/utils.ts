@@ -17,6 +17,20 @@ export interface LintRoute {
   dir: string;
 }
 
+interface HarnessStateLike {
+  active?: unknown;
+}
+
+interface SessionEntryLike {
+  type?: unknown;
+  customType?: unknown;
+  data?: HarnessStateLike;
+}
+
+interface SessionManagerLike {
+  getEntries(): SessionEntryLike[];
+}
+
 export function routeLinter(filePath: string): LintRoute | null {
   if (filePath.endsWith(".py")) {
     return { script: getScriptPath("lint-py.sh"), tier: "fast", dir: "./backend" };
@@ -50,4 +64,22 @@ export function getStopAttempts(): number {
 
 export function getMaxAttempts(): number {
   return MAX_ATTEMPTS;
+}
+
+export function isHarnessActive(sessionManager: SessionManagerLike | null | undefined): boolean {
+  if (!sessionManager) {
+    return false;
+  }
+
+  const entries = sessionManager.getEntries();
+  for (let index = entries.length - 1; index >= 0; index -= 1) {
+    const entry = entries[index];
+    if (entry.type !== "custom" || entry.customType !== "pi-harness-state") {
+      continue;
+    }
+
+    return entry.data?.active === true;
+  }
+
+  return false;
 }

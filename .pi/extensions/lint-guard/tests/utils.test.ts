@@ -6,6 +6,7 @@ import {
   isCircuitBroken,
   getStopAttempts,
   getMaxAttempts,
+  isHarnessActive,
 } from "../utils.js";
 
 describe("routeLinter", () => {
@@ -49,6 +50,50 @@ describe("routeLinter", () => {
     expect(routeLinter("file.yaml")).toBeNull();
     expect(routeLinter("file.sh")).toBeNull();
     expect(routeLinter("Dockerfile")).toBeNull();
+  });
+});
+
+describe("isHarnessActive", () => {
+  it("returns true for the latest active harness state entry", () => {
+    const sessionManager = {
+      getEntries: () => [
+        {
+          type: "custom",
+          customType: "pi-harness-state",
+          data: { active: false },
+        },
+        {
+          type: "custom",
+          customType: "pi-harness-state",
+          data: { active: true },
+        },
+      ],
+    };
+
+    expect(isHarnessActive(sessionManager)).toBe(true);
+  });
+
+  it("returns false when the latest harness state is inactive", () => {
+    const sessionManager = {
+      getEntries: () => [
+        {
+          type: "custom",
+          customType: "pi-harness-state",
+          data: { active: true },
+        },
+        {
+          type: "custom",
+          customType: "pi-harness-state",
+          data: { active: false },
+        },
+      ],
+    };
+
+    expect(isHarnessActive(sessionManager)).toBe(false);
+  });
+
+  it("returns false when there is no harness state entry", () => {
+    expect(isHarnessActive({ getEntries: () => [] })).toBe(false);
   });
 });
 
