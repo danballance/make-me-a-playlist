@@ -21,6 +21,15 @@ export interface HarnessState {
   active: boolean;
 }
 
+export interface HarnessStatus {
+  kind: "park-bench-harness-status";
+  status: "running" | "completed";
+  current_phase: string | null;
+  completed_phases: string[];
+  summary: string | null;
+  updated_at: string;
+}
+
 // ── Shared context ─────────────────────────────────────────────────────
 
 export interface HarnessContext {
@@ -30,4 +39,5 @@ export interface HarnessContext {
   piedPiDir: string;
   projectRoot: string;
   persistState: () => void;
+  writeStatus: (summary?: string | null) => void;
 }
